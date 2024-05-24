@@ -34,3 +34,5 @@ t, created = Tag.objects.get_or_create(name='HN') #Tạo đối tượng trong C
 
 # Tạo user trong vai trò admin
  python manage.py createsuperuser
+
+ pip freeze > requirements.txt
