@@ -1,0 +1,10 @@
+{% extends 'admin/base_site.html' %}
+
+{% block content %}
+<h1>Danh sach tour: {{tour_count}}</h1>
+<ul>
+    {% for s in stats %}
+    <li><strong>{{s.tour_name}}</strong> co: {{s.tourdetail_count}}</li>
+    {% endfor %}
+</ul>
+{% endblock %}

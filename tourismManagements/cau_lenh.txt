@@ -1,0 +1,36 @@
+#CSDL
+python manage.py makemigrations [name]
+python manage.py migrate
+
+#tác động CSDL
+
+python manage.py shell
+
+from tours.models import *
+ c = Category(name="Du lịch bụi")
+ c.save()
+
+Category.objects.create(name="Thám hiểm")
+
+Category.objects.get_or_create(name="Du lịch sinh thái")
+
+c=Category.objects.get(pk=1)
+c
+Tour.objects.create(tour_name="Vòng quanh Cần Giờ",description="Tham quan phạm vi Cần Giờ", category=c)
+
+Category.objects.filter(name__contains="bụi") #tìm loại tên có từ bụi
+Category.objects.filter(name__startswith="bụi")
+Category.objects.filter(name__endswith="bụi")
+
+c=Category.objects.filter(name__contains="bụi")  #xem câu truy vấn SQL
+print(c.query)
+q = Tour.objects.filter(category__name__contains="Du")
+print(q.query)
+
+TourDetail.objects.filter(tour__tour_name__icontains="Vòng")  #Truy vấn ds tourdetail có thuộc tour có tour_name = VÒng
+
+
+t, created = Tag.objects.get_or_create(name='HN') #Tạo đối tượng trong CSDL Tag
+
+# Tạo user trong vai trò admin
+ python manage.py createsuperuser
