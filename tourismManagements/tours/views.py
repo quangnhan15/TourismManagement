@@ -1,12 +1,13 @@
 from django.http import HttpResponse
 from rest_framework.decorators import action
+from rest_framework.permissions import AllowAny
 from rest_framework.response import Response
 from django.views import View
 from rest_framework import viewsets, permissions, generics, parsers, status
 from rest_framework.parsers import MultiPartParser
 from . import serializers, perms
 from .models import Tour, TourDetail, User, Category, Comment, Like
-from .serializers import TourSerializer, TourDeitailSerializer, UserSerializer, TourDetailLikedSerializer
+from .serializers import TourSerializer, TourDeitailSerializer, UserSerializer, TourDetailLikedSerializer, CategorySerializer
 
 
 class UserViewSet (viewsets.ViewSet, generics.CreateAPIView, generics.RetrieveAPIView, generics.UpdateAPIView):
@@ -18,7 +19,7 @@ class UserViewSet (viewsets.ViewSet, generics.CreateAPIView, generics.RetrieveAP
         if self.action == 'retrieve':
             return [permissions.IsAuthenticated()]
 
-        return [permissions.AllowAny()]
+        return [AllowAny()]
 
     @action(detail=False, methods=['get'], url_name='current_user')
     def current_user(self, request):
@@ -34,7 +35,7 @@ class TourViewset(viewsets.ModelViewSet):
     #     if self.action == 'list':
     #         return [permissions.AllowAny()]
     #     return [permissions.IsAuthenticated()]
-    permission_classes = [permissions.IsAuthenticated]
+    # permission_classes = [permissions.IsAuthenticated]
     # List (Get) ->xem ds tour
     # ..(Post) -> them tour
     # detail -> xem chi tiet tour
@@ -42,10 +43,15 @@ class TourViewset(viewsets.ModelViewSet):
     # ..(delete) -->Xoa khoa hoc
 
 
+class CategoryViewSet(viewsets.ModelViewSet):
+    queryset = Category.objects.all().order_by('id')
+    serializer_class = CategorySerializer
+
+
 class TourDetailViewset(viewsets.ModelViewSet):
     queryset = TourDetail.objects.filter(active=True)
     serializer_class = TourDetailLikedSerializer
-    permission_classes = [permissions.AllowAny]
+    permission_classes = [AllowAny]
 
     def get_permissions(self):
         if self.action in ['add_comment', 'like']: #like or comment cần đăng nhập

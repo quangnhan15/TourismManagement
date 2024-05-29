@@ -27,7 +27,7 @@ SECRET_KEY = 'django-insecure-sbpm1qi0*3yaj3kr1y$y^_#)chc5=5r4927zass%t!c2^+g00n
 DEBUG = True
 
 # Những host truy cập vào
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ["*"]
 
 # Application definition
 # Nơi khai báo các app
@@ -46,7 +46,8 @@ INSTALLED_APPS = [
     'oauth2_provider',
     'drf_yasg',
     'debug_toolbar',
-    'cloudinary'
+    'cloudinary',
+    'corsheaders'
 ]
 
 REST_FRAMEWORK = {
@@ -54,7 +55,10 @@ REST_FRAMEWORK = {
     'PAGE_SIZE': '20',
     'DEFAULT_AUTHENTICATION_CLASSES': (
         'oauth2_provider.contrib.rest_framework.OAuth2Authentication',
-    )
+    ),
+    'DEFAULT_PERMISSION_CLASSES': [
+        'rest_framework.permissions.AllowAny',
+    ],
 }
 
 import cloudinary
@@ -75,6 +79,7 @@ MIDDLEWARE = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'debug_toolbar.middleware.DebugToolbarMiddleware',
+    'corsheaders.middleware.CorsMiddleware',
 ]
 
 INTERNAL_IPS = [
@@ -166,3 +171,9 @@ AUTH2_PROVIDER = {
     'OAUTH2_BACKEND_CLASS': 'oauth2_provider.oauth2_backends.JSONOAuthLibCore',
 }
 
+CORS_ALLOW_ALL_ORIGINS = True
+
+CORS_ALLOWED_ORIGINS = [
+    'http://localhost:8000',  # Your front-end domain
+    'http://127.0.0.1:8000',  # Another possible domain
+]

@@ -1,6 +1,6 @@
 from rest_framework import serializers
 from rest_framework.serializers import ModelSerializer
-from .models import Tour, TourDetail, Tag, User, Comment
+from .models import Tour, TourDetail, Tag, User, Comment, Category
 
 
 class UserSerializer(ModelSerializer):
@@ -17,6 +17,12 @@ class UserSerializer(ModelSerializer):
         user.save()
 
         return user
+
+
+class CategorySerializer(ModelSerializer):
+    class Meta:
+        model = Category
+        fields = ["id", "name"]
 
 
 class TourSerializer(ModelSerializer):
